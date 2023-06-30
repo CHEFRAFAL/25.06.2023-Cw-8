@@ -1,25 +1,90 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.6.33801.468
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Student's Zad 8.4", "Student's Zad 8.4\Student's Zad 8.4.csproj", "{8522AC11-F455-43AE-AA11-054E3132C20C}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8522AC11-F455-43AE-AA11-054E3132C20C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8522AC11-F455-43AE-AA11-054E3132C20C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8522AC11-F455-43AE-AA11-054E3132C20C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8522AC11-F455-43AE-AA11-054E3132C20C}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {6F63B73A-0F7D-434C-900E-EC9C5A07579F}
-	EndGlobalSection
-EndGlobal
+﻿using System;
+
+enum Gender
+{
+    M,
+    F
+}
+struct Student
+{
+    public string Nazwisko;
+    public int NrAlbumu;
+    public double Ocena;
+    public Gender Plec;
+}
+class Program
+{
+    static void Main(string[] args)
+    {
+        Student[] grupa = new Student[5];
+        for (int i = 0; i < grupa.Length; i++)
+        {
+            Console.WriteLine($"Student {i + 1}:");
+            WypelnijStudenta(ref grupa[i]);
+        }
+        Console.WriteLine("Informacje o studentach:");
+        foreach (Student student in grupa)
+        {
+            WyswietlStudenta(student);
+        }
+        double srednia = ObliczSrednia(grupa);
+        Console.WriteLine($"Łączna średnia ocen: {srednia}");
+    }
+    static void WypelnijStudenta(ref Student student)
+    {
+        Console.WriteLine("Podaj nazwisko studenta:");
+        student.Nazwisko = Console.ReadLine();
+
+        Console.WriteLine("Podaj numer albumu:");
+        student.NrAlbumu = int.Parse(Console.ReadLine());
+
+        Console.WriteLine("Podaj ocenę:");
+        double ocena = double.Parse(Console.ReadLine());
+
+        if (ocena < 2.0)
+        {
+            student.Ocena = 2.0;
+        }
+        else if (ocena > 5.0)
+        {
+            student.Ocena = 5.0;
+        }
+        else
+        {
+            student.Ocena = ocena;
+        }
+
+        Console.WriteLine("Podaj płeć (M/F):");
+        string plecInput = Console.ReadLine().ToUpper();
+        if (plecInput == "M")
+        {
+            student.Plec = Gender.M;
+        }
+        else if (plecInput == "F")
+        {
+            student.Plec = Gender.F;
+        }
+        else
+        {
+            Console.WriteLine("Niepoprawny format płci. Ustawiam domyślnie na M.");
+            student.Plec = Gender.M;
+        }
+    }
+    static double ObliczSrednia(Student[] grupa)
+    {
+        double sumaOcen = 0.0;
+
+        foreach (Student student in grupa)
+        {
+            sumaOcen += student.Ocena;
+        }
+
+        return sumaOcen / grupa.Length;
+    }
+    static void WyswietlStudenta(Student student)
+    {
+        Console.WriteLine($"Nazwisko: {student.Nazwisko}, Nr albumu: {student.NrAlbumu}, Ocena: {student.Ocena}, Płeć: {student.Plec}");
+    }
+
+}
